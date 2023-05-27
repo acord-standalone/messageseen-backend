@@ -139,13 +139,11 @@ const PORT = Number(process.env.PORT);
 })();
 
 echoSocket.on("MS:Update", async ({ userIds, type, channelId, seenBy, messageId }) => {
-  if (type === "seen") {
-    io.sockets.sockets.forEach(socket => {
-      if (userIds.includes(socket.data.id)) {
-        socket.emit("seen", [channelId, messageId, seenBy]);
-      }
-    });
-  }
+  io.sockets.sockets.forEach(socket => {
+    if (userIds.includes(socket.data.id)) {
+      socket.emit(type, [channelId, messageId, seenBy]);
+    }
+  });
 });
 
 

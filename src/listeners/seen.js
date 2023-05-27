@@ -14,6 +14,24 @@ module.exports = new SocketListener({
 
     let [channelId, messageId] = data;
 
+
+    {
+      let oldMsg = await redis.json.get(
+        `MS:Messages:${channelId}:${socket.data.id}`,
+        "$"
+      );
+      if (oldMsg?.channelId) {
+        let subs = await ftSearch("MSChannelSubscriptions", `@channelId:{${oldMsg.channelId}}`);
+        let userIds = subs.documents.map(i => i.userId);
+
+        echoSocket.emit(
+          "MS:Update",
+          { type: "unseen", userIds, seenBy: socket.data.id, channelId, messageId }
+        );
+      }
+    }
+
+
     await redis.json.set(
       `MS:Messages:${channelId}:${socket.data.id}`,
       { channelId, messageId, userId: socket.data.id, at: Date.now() }
