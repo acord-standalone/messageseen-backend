@@ -26,7 +26,7 @@ module.exports = new SocketListener({
 
         echoSocket.emit(
           "MS:Update",
-          { type: "unseen", userIds, seenBy: socket.data.id, channelId, messageId }
+          { type: "unseen", userIds, seenBy: socket.data.id, channelId: oldMsg.channelId, messageId: oldMsg.messageId }
         );
       }
     }
