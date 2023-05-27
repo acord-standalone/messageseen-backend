@@ -22,7 +22,7 @@ module.exports = new SocketListener({
       );
       if (oldMsg?.channelId) {
         let subs = await ftSearch("MSChannelSubscriptions", `@channelId:{${oldMsg.channelId}}`);
-        let userIds = subs.documents.map(i => i.userId);
+        let userIds = subs.documents.map(i => i.value.userId);
 
         echoSocket.emit(
           "MS:Update",
@@ -48,7 +48,7 @@ module.exports = new SocketListener({
 
     {
       let subs = await ftSearch("MSChannelSubscriptions", `@channelId:{${channelId}}`);
-      let userIds = subs.documents.map(i => i.userId);
+      let userIds = subs.documents.map(i => i.value.userId);
 
       echoSocket.emit(
         "MS:Update",

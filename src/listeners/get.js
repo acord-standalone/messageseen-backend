@@ -10,7 +10,7 @@ module.exports = new SocketListener({
     if (typeof data[0] !== "string") throw "Invalid shape!";
 
     let messages = await ftSearch("MSMessages", `@messageId:{${data[0]}}`);
-    let users = messages.documents.map(i => [i.userId, i.at]);
+    let users = messages.documents.map(i => [i.value.userId, i.value.at]);
 
     return users;
   }
