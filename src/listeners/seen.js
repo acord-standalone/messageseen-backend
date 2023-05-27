@@ -34,12 +34,14 @@ module.exports = new SocketListener({
 
     await redis.json.set(
       `MS:Messages:${channelId}:${socket.data.id}`,
+      "$",
       { channelId, messageId, userId: socket.data.id, at: Date.now() }
     );
     redis.expire(`MS:Messages:${channelId}:${socket.data.id}`, 60 * 60 * 24);
 
     await redis.json.set(
       `MS:ChannelSubscriptions:${socket.data.id}`,
+      "$",
       { channelId, userId: socket.data.id }
     );
     redis.expire(`MS:ChannelSubscriptions:${socket.data.id}`, 60 * 60 * 6);
